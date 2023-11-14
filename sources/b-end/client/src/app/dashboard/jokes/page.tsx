@@ -1,3 +1,6 @@
+// TODO: Review menambahkan Link untuk ke detail page
+import Link from "next/link";
+
 // Membuat definition type untuk data yang akan di-parse
 type Joke = {
   id: number;
@@ -29,6 +32,8 @@ const DashboardJokePage = async () => {
             <th className="p-4">No</th>
             <th className="p-4">Setup</th>
             <th className="p-4">Delivery</th>
+            {/* // TODO: Review menambahkan Link untuk ke detail page */}
+            <th className="p-4">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +42,15 @@ const DashboardJokePage = async () => {
               <td>{idx + 1}</td>
               <td>{todo.setup}</td>
               <td>{todo.delivery}</td>
+              {/* // TODO: Review menambahkan Link untuk ke detail page */}
+              <td className="p-2">
+                <Link
+                  href={`/dashboard/jokes/${todo.id}`}
+                  className="py-2 px-4 bg-blue-200 hover:bg-blue-400 hover:text-white transition-colors duration-300 rounded"
+                >
+                  Detail
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>
