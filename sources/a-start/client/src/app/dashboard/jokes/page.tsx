@@ -6,7 +6,7 @@ type Joke = {
 };
 
 const fetchJokes = async () => {
-  const response = await fetch("http://localhost:3001/joke");
+  const response = await fetch("http://localhost:3001/jokes");
   const responseJson: Joke[] = await response.json();
 
   if (!response.ok) {
