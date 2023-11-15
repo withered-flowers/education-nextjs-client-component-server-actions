@@ -1,4 +1,5 @@
-// TODO: Review menambahkan Link untuk ke detail page
+// ?? Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (1)
+// Import Link untuk ke detail page
 import Link from "next/link";
 
 // Membuat definition type untuk data yang akan di-parse
@@ -32,7 +33,8 @@ const DashboardJokePage = async () => {
             <th className="p-4">No</th>
             <th className="p-4">Setup</th>
             <th className="p-4">Delivery</th>
-            {/* // TODO: Review menambahkan Link untuk ke detail page */}
+            {/* ?? Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (2) */}
+            {/* Menambahkan sebuah header untuk "Action" */}
             <th className="p-4">Action</th>
           </tr>
         </thead>
@@ -42,7 +44,8 @@ const DashboardJokePage = async () => {
               <td>{idx + 1}</td>
               <td>{todo.setup}</td>
               <td>{todo.delivery}</td>
-              {/* // TODO: Review menambahkan Link untuk ke detail page */}
+              {/* Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (3) */}
+              {/* Menambahkan sebuah td untuk menggunakan component Link yang akan ditampilkan sebagai sebuah button */}
               <td className="p-2">
                 <Link
                   href={`/dashboard/jokes/${todo.id}`}
