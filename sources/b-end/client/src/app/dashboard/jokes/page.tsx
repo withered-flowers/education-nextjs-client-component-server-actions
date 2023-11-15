@@ -23,6 +23,20 @@ const fetchJokes = async () => {
 const DashboardJokePage = async () => {
   const jokes = await fetchJokes();
 
+  // ?? Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes` (1)
+  // Karena kita sekarang akan membuat button yang bisa menghapus data, maka sekarang kita akan membutuhkan sebuah event handler (onClick) yah !
+  const buttonDeleteOnClickHandler = (
+    // Info: untuk event ini akan memiliki interface dengan nama MouseEvent dan memiliki target interface HTMLButtonElement
+
+    // Sehingga deklarasi typenya akan menjadi MouseEvent<HTMLButtonElement>
+    // Mungkin di sini tidak akan digunakan, sehingga kita akan menambahkan _ (underscore) untuk mengabaikan parameter tersebut
+    _event: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) => {
+    // Kita di sini akan mencoba untuk mensimulasikan terlebih dahulu dengan menggunakan console.log
+    console.log("Delete Button Clicked for id:", id);
+  };
+
   return (
     <section>
       <h2 className="text-2xl font-semibold">Dashboard Page - Jokes</h2>
@@ -53,6 +67,18 @@ const DashboardJokePage = async () => {
                 >
                   Detail
                 </Link>
+              </td>
+              {/* ?? Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes` (2) */}
+              {/* Di sini kita akan menambahkan button untuk melakukan interaksi buttonDeleteOnClickHandler */}
+              <td className="p-2">
+                <button
+                  onClick={(event) =>
+                    buttonDeleteOnClickHandler(event, todo.id)
+                  }
+                  className="py-2 px-4 bg-red-200 hover:bg-red-400 hover:text-white transition-colors duration-300 rounded"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
