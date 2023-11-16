@@ -1,6 +1,11 @@
 // ?? Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (1)
 // Import Link untuk ke detail page
-import Link from "next/link";
+// import Link from "next/link";
+
+// ?? Step 3 - Membuat Client Component `TableJokes` (7)
+// Comment import Link
+// Lakukan import TableJokes
+import TableJokes from "@/components/TableJokes";
 
 // Membuat definition type untuk data yang akan di-parse
 type Joke = {
@@ -25,52 +30,56 @@ const DashboardJokePage = async () => {
 
   // ?? Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes` (1)
   // Karena kita sekarang akan membuat button yang bisa menghapus data, maka sekarang kita akan membutuhkan sebuah event handler (onClick) yah !
-  const buttonDeleteOnClickHandler = (
-    // Info: untuk event ini akan memiliki interface dengan nama MouseEvent dan memiliki target interface HTMLButtonElement
+  // const buttonDeleteOnClickHandler = (
+  //   // Info: untuk event ini akan memiliki interface dengan nama MouseEvent dan memiliki target interface HTMLButtonElement
 
-    // Sehingga deklarasi typenya akan menjadi MouseEvent<HTMLButtonElement>
-    // Mungkin di sini tidak akan digunakan, sehingga kita akan menambahkan _ (underscore) untuk mengabaikan parameter tersebut
-    _event: React.MouseEvent<HTMLButtonElement>,
-    id: number
-  ) => {
-    // Kita di sini akan mencoba untuk mensimulasikan terlebih dahulu dengan menggunakan console.log
-    console.log("Delete Button Clicked for id:", id);
-  };
+  //   // Sehingga deklarasi typenya akan menjadi MouseEvent<HTMLButtonElement>
+  //   // Mungkin di sini tidak akan digunakan, sehingga kita akan menambahkan _ (underscore) untuk mengabaikan parameter tersebut
+  //   _event: React.MouseEvent<HTMLButtonElement>,
+  //   id: number
+  // ) => {
+  //   // Kita di sini akan mencoba untuk mensimulasikan terlebih dahulu dengan menggunakan console.log
+  //   console.log("Delete Button Clicked for id:", id);
+  // };
+  // ?? Step 3 - Membuat Client Component `TableJokes` (2)
+  // Comment buttonDeleteOnClickHandler di atas
 
   return (
     <section>
       <h2 className="text-2xl font-semibold">Dashboard Page - Jokes</h2>
 
-      <table className="mt-4">
+      {/* ?? Step 3 - Membuat Client Component `TableJokes` (3) */}
+      {/* Comment table di bawah ini */}
+      {/* <table className="mt-4">
         <thead>
           <tr>
             <th className="p-4">No</th>
             <th className="p-4">Setup</th>
-            <th className="p-4">Delivery</th>
-            {/* ?? Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (2) */}
-            {/* Menambahkan sebuah header untuk "Action" */}
-            <th className="p-4">Action</th>
+            <th className="p-4">Delivery</th> */}
+      {/* ?? Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (2) */}
+      {/* Menambahkan sebuah header untuk "Action" */}
+      {/* <th className="p-4">Action</th>
           </tr>
         </thead>
-        <tbody>
-          {jokes.map((todo, idx) => (
+        <tbody> */}
+      {/* {jokes.map((todo, idx) => (
             <tr key={todo.id}>
               <td>{idx + 1}</td>
               <td>{todo.setup}</td>
-              <td>{todo.delivery}</td>
-              {/* Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (3) */}
-              {/* Menambahkan sebuah td untuk menggunakan component Link yang akan ditampilkan sebagai sebuah button */}
-              <td className="p-2">
+              <td>{todo.delivery}</td> */}
+      {/* Step 1 - Menambahkan "tombol" Detail pada `/dashboard/jokes` (3) */}
+      {/* Menambahkan sebuah td untuk menggunakan component Link yang akan ditampilkan sebagai sebuah button */}
+      {/* <td className="p-2">
                 <Link
                   href={`/dashboard/jokes/${todo.id}`}
                   className="py-2 px-4 bg-blue-200 hover:bg-blue-400 hover:text-white transition-colors duration-300 rounded"
                 >
                   Detail
                 </Link>
-              </td>
-              {/* ?? Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes` (2) */}
-              {/* Di sini kita akan menambahkan button untuk melakukan interaksi buttonDeleteOnClickHandler */}
-              <td className="p-2">
+              </td> */}
+      {/* ?? Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes` (2) */}
+      {/* Di sini kita akan menambahkan button untuk melakukan interaksi buttonDeleteOnClickHandler */}
+      {/* <td className="p-2">
                 <button
                   onClick={(event) =>
                     buttonDeleteOnClickHandler(event, todo.id)
@@ -83,7 +92,11 @@ const DashboardJokePage = async () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+
+      {/* ?? Step 3 - Membuat Client Component `TableJokes` (8) */}
+      {/* Gunakan component TableJokes */}
+      <TableJokes jokes={jokes} />
     </section>
   );
 };
