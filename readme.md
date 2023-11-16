@@ -2,6 +2,7 @@
 
 ## Table of Content
 
+- [Scope Pembelajaran](#scope-pembelajaran)
 - [Demo](#demo)
   - [Step 0 - Menyalakan server](#step-0---menyalakan-server)
   - [Step 1 - Menambahkan "tombol" `Detail` pada `/dashboard/jokes`](#step-1---menambahkan-tombol-detail-pada-dashboardjokes)
@@ -19,7 +20,7 @@
 
 - Client Component
 - Caching Behaviour (`Data Cache`)
-- Server Action
+- Server Actions
 
 ## Demo
 
