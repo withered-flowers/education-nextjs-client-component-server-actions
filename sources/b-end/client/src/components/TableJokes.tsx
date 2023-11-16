@@ -6,6 +6,10 @@
 // import Link dari "next/link"
 import Link from "next/link";
 
+// ?? Step 4 - Implementasi Delete pada Client Component `TableJokes` (3)
+// Import hooks dengan nama useRouter untuk menavigasi (refresh) halaman nantinya
+import { useRouter } from "next/navigation";
+
 // ?? Step 3 - Membuat Client Component `TableJokes` (5)
 // Membuat definition type untuk data yang akan di-parse
 type Joke = {
@@ -17,11 +21,30 @@ type Joke = {
 // ?? Step 3 - Membuat Client Component `TableJokes` (1)
 // Membuat component TableJokes ini
 const TableJokes = ({ jokes }: { jokes: Joke[] }) => {
-  const buttonDeleteOnClickHandler = (
+  // ?? Step 4 - Implementasi Delete pada Client Component `TableJokes` (4)
+  // Menggunakan useRouter
+  const navigation = useRouter();
+
+  // ?? Step 4 - Implementasi Delete pada Client Component `TableJokes` (2)
+  // Membuat fungsi ini menjadi async karena kita akan melakukan fetch ke backend
+  const buttonDeleteOnClickHandler = async (
     _event: React.MouseEvent<HTMLButtonElement>,
     id: number
   ) => {
     console.log("Delete Button Clicked for id:", id);
+
+    // ?? Step 4 - Implementasi Delete pada Client Component `TableJokes` (1)
+    // Menggunakan fetch untuk melakukan DELETE ke backend
+    const response = await fetch(`http://localhost:3001/jokes/${id}`, {
+      method: "DELETE",
+    });
+    const responseJson = await response.json();
+
+    console.log("statusCode:", response.status, "result:", responseJson);
+
+    // ?? Step 4 - Implementasi Delete pada Client Component `TableJokes` (5)
+    // Menggunakan useRouter untuk melakukan refresh halaman
+    navigation.refresh();
   };
 
   return (

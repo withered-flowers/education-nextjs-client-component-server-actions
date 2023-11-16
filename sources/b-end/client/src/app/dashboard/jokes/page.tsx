@@ -15,7 +15,12 @@ type Joke = {
 };
 
 const fetchJokes = async () => {
-  const response = await fetch("http://localhost:3001/jokes");
+  // ?? Step 5 - Opt-out dari Data Cache (1),
+  // Melakukan opt-out dari data cache
+  // dengan menggunakan cache: "no-store"
+  const response = await fetch("http://localhost:3001/jokes", {
+    cache: "no-store",
+  });
   const responseJson: Joke[] = await response.json();
 
   if (!response.ok) {
