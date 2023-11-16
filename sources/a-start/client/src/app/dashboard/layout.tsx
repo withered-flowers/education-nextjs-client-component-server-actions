@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <DashboardSidebar />
 
       {/* Right Side */}
-      <main className="w-full h-full bg-white dark:bg-zinc-900/30 p-4">
+      <main className="w-full h-full overflow-auto bg-white dark:bg-zinc-900/30 p-4">
         {/* Content */}
         {children}
       </main>

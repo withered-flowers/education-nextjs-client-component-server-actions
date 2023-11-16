@@ -7,6 +7,10 @@
 // Lakukan import TableJokes
 import TableJokes from "@/components/TableJokes";
 
+// ?? Step 6 - Membuat Form Add Joke (Client Component) (2)
+// Mengimport component ClientFormAddJokes
+import ClientFormAddJokes from "@/components/ClientFormAddJokes";
+
 // Membuat definition type untuk data yang akan di-parse
 type Joke = {
   id: number;
@@ -52,6 +56,12 @@ const DashboardJokePage = async () => {
   return (
     <section>
       <h2 className="text-2xl font-semibold">Dashboard Page - Jokes</h2>
+
+      {/* ?? Step 6 - Membuat Form Add Joke (Client Component) (3) */}
+      {/* Memanggil component ClientFormAddJokes */}
+      <section className="flex gap-4">
+        <ClientFormAddJokes />
+      </section>
 
       {/* ?? Step 3 - Membuat Client Component `TableJokes` (3) */}
       {/* Comment table di bawah ini */}
