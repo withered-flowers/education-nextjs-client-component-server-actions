@@ -11,6 +11,10 @@ import TableJokes from "@/components/TableJokes";
 // Mengimport component ClientFormAddJokes
 import ClientFormAddJokes from "@/components/ClientFormAddJokes";
 
+// ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (2)
+// Mengimport component ServerFormAddJokes
+import ServerFormAddJokes from "@/components/ServerFormAddJokes";
+
 // Membuat definition type untuk data yang akan di-parse
 type Joke = {
   id: number;
@@ -23,6 +27,8 @@ const fetchJokes = async () => {
   // Melakukan opt-out dari data cache
   // dengan menggunakan cache: "no-store"
   const response = await fetch("http://localhost:3001/jokes", {
+    // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (12)
+    // Mematikan fungsi cache: no-store karena kita akan mencoba untuk menggunakan Server Rendered Component
     cache: "no-store",
   });
   const responseJson: Joke[] = await response.json();
@@ -61,6 +67,9 @@ const DashboardJokePage = async () => {
       {/* Memanggil component ClientFormAddJokes */}
       <section className="flex gap-4">
         <ClientFormAddJokes />
+        {/* ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (3) */}
+        {/* Memanggil component ServerFormAddJokes */}
+        <ServerFormAddJokes />
       </section>
 
       {/* ?? Step 3 - Membuat Client Component `TableJokes` (3) */}

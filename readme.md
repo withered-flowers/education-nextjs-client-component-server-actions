@@ -11,7 +11,7 @@
   - [Intermezzo - Data Cache](#intermezzo---data-cache)
   - [Step 5 - Opt-out dari Data Cache](#step-5---opt-out-dari-data-cache)
   - [Step 6 - Membuat Form Add Joke (Client Component)](#step-6---membuat-form-add-joke-client-component)
-  - [Intermezzo - Server Actions](#intermezzo---server-actions)
+  - [Intermezzo - `Server Actions`](#intermezzo---server-actions)
   - [Step 7 - Membuat Form Add Joke (Server Rendered Component)](#step-7---membuat-form-add-joke-server-rendered-component)
 - [References](#references)
 
@@ -716,12 +716,181 @@ Nah hal ini juga adalah hal yang akan kita lakukan apabila kita menggunakan `cli
 
    Namun bagaimanakah caranya?
 
-   Caranya adalah dengan menggunakan sesuatu yang bernama `Server Actions`
+   Caranya adalah dengan menggunakan sesuatu yang bernama **`Server Actions`**
 
-### Intermezzo - Server Actions
+### Intermezzo - `Server Actions`
 
-Server Actions
+Server Actions merupakan sebuah fitur yang ada di dalam NextJS yang bisa digunakan untuk melakukan mutasi ke backend pada saat menggunakan form.
+
+Perbedannya dengan cara React adalah, cara ini kita gunakan layaknya seperti form `action` yang umumnya digunakan pada form HTML, ketimbang menggunakan event `onSubmit` yang ada di dalam React.
 
 ### Step 7 - Membuat Form Add Joke (Server Rendered Component)
 
+Pada langkah ini kita akan mencoba untuk membuat ulang Form untuk menambahkan joke lagi, hanya saja sekarang ini sudah menggunakan `Server Actions` dan akan mencoba untuk membuat componentnya menjadi `Server Rendered Component`.
+
+1. Membuat sebuah component baru dengan nama `ServerFormAddJokes` (`src/components/ServerFormAddJokes.tsx`) dan menuliskan kode sebagai berikut:
+
+   ```tsx
+   // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (1)
+   // Membuat component ServerFormAddJokes
+
+   // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (7)
+   // Menggunakan revalidatePath untuk melakukan revalidate pada path tertentu
+   import { revalidatePath } from "next/cache";
+
+   // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (8)
+   // Menggunakan redirect untuk melakukan pindah halaman setelah action selesai
+   import { redirect } from "next/navigation";
+
+   const ServerFormAddJokes = () => {
+     // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (4)
+     // Server Action diharuskan berupa async function
+     // Di sini juga akan menerima FormData
+     const formActionHandler = async (formData: FormData) => {
+       "use server";
+       // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (5)
+       // Mendeklarasikan function ini sebagai server function dengan "use server"
+
+       console.log(formData.get("setup"));
+       console.log(formData.get("delivery"));
+
+       const response = await fetch("http://localhost:3001/jokes", {
+         method: "POST",
+         body: JSON.stringify({
+           setup: formData.get("setup"),
+           delivery: formData.get("delivery"),
+         }),
+         headers: {
+           "Content-Type": "application/json",
+         },
+       });
+       const responseJson = await response.json();
+       console.log(responseJson);
+
+       // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (9)
+       // Menggunakan revalidatePath untuk melakukan revalidate (hilang cache) pada path tertentu
+       revalidatePath("/dashboard/jokes");
+
+       // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (10)
+       // Menggunakan redirect untuk melakukan pindah halaman setelah action selesai
+       redirect("/dashboard/jokes");
+
+       // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (11)
+       // Ingat bahwa pada saat menggunakan form html, biasanya akan melakukan refresh halaman
+       // dan tidak mendapatkan response dari server
+     };
+
+     return (
+       <>
+         <section className="mt-4 bg-gray-200 p-4 rounded md:max-w-[25vw]">
+           <p className="font-semibold mb-4">
+             Form Add Jokes - Server Component
+           </p>
+           {/* ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (6) */}
+           {/* Menggunakan action berupa formActionHandler */}
+           <form action={formActionHandler} className="flex flex-col gap-2">
+             <input
+               className="py-2 px-4"
+               type="text"
+               id="setup"
+               // Perhatikan di sini kita menggunakan name="setup"
+               name="setup"
+               placeholder="Setup"
+             />
+             <input
+               className="py-2 px-4"
+               type="text"
+               id="delivery"
+               // Perhatikan di sini kita menggunakan name="delivery"
+               name="delivery"
+               placeholder="Delivery"
+             />
+             <button
+               className="bg-emerald-300 hover:bg-emerald-500 hover:text-white/90 rounded py-2 px-4 transition-colors duration-300"
+               type="submit"
+             >
+               Add Joke
+             </button>
+           </form>
+         </section>
+       </>
+     );
+   };
+
+   export default ServerFormAddJokes;
+   ```
+
+1. Memodifikasi file `page.tsx` (`src/dashboard/jokes.page.tsx`) sebagai berikut:
+
+   ```tsx
+   import TableJokes from "@/components/TableJokes";
+
+   import ClientFormAddJokes from "@/components/ClientFormAddJokes";
+
+   // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (2)
+   // Mengimport component ServerFormAddJokes
+   import ServerFormAddJokes from "@/components/ServerFormAddJokes";
+
+   type Joke = {
+     id: number;
+     setup: string;
+     delivery: string;
+   };
+
+   const fetchJokes = async () => {
+     const response = await fetch("http://localhost:3001/jokes", {
+       // ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (12)
+       // Mematikan fungsi cache: no-store karena kita akan mencoba untuk menggunakan Server Rendered Component
+       cache: "no-store",
+     });
+     const responseJson: Joke[] = await response.json();
+
+     if (!response.ok) {
+       throw new Error("Waduh Error ...");
+     }
+
+     return responseJson;
+   };
+
+   const DashboardJokePage = async () => {
+     const jokes = await fetchJokes();
+
+     return (
+       <section>
+         <h2 className="text-2xl font-semibold">Dashboard Page - Jokes</h2>
+
+         <section className="flex gap-4">
+           <ClientFormAddJokes />
+           {/* ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (3) */}
+           {/* Memanggil component ServerFormAddJokes */}
+           <ServerFormAddJokes />
+         </section>
+
+         <TableJokes jokes={jokes} />
+       </section>
+     );
+   };
+
+   export default DashboardJokePage;
+   ```
+
+1. Membuka browser dan kembali ke halaman `http://localhost:3000/dashboard/jokes` dan cobalah untuk menambahkan data yang baru pada `Form Add Jokes - Server Component`
+
+1. Cobalah untuk memodifikasi nama file `loading.tsx` dan `error.tsx` menjadi nama yang lain (`loading_dupe.tsx` dan `error.tsx`), kemudian pada browser cobalah untuk mematikan javascript, dan coba untuk menambahkan jokes pada keduanya.
+
+   Manakah yang jalan? `Server Component` atau `Client Component` ?
+
+Sampai pada titik ini kita sudah berhasil mencoba untuk menggunakan `Server Actions` dan membuat sebuah `Server Rendered Component` yang bisa digunakan untuk melakukan mutasi ke backend. Mantap bukan?
+
+Tapi di balik itu, ada yang harus kita korbankan:
+
+- Kompleksitas kode yang harus kita tulis
+- Harus mengetahui manakah component yang menjadi client dan component manakah yang menjadi server dan kombinasinya.
+
+Selamat mempelajari NextJS dan sampai jumpa di pembelajaran berikutnya !
+
 ## References
+
+- https://nextjs.org/docs/app/building-your-application/data-fetching/patterns
+- https://nextjs.org/docs/app/api-reference/functions/server-actions
+- https://nextjs.org/docs/app/building-your-application/rendering/client-components
