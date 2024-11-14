@@ -2,20 +2,22 @@
 
 ## Table of Content
 
-- [Scope Pembelajaran](#scope-pembelajaran)
-- [Disclaimer](#disclaimer)
-- [Demo](#demo)
-  - [Step 0 - Menyalakan server](#step-0---menyalakan-server)
-  - [Step 1 - Menambahkan "tombol" `Detail` pada `/dashboard/jokes`](#step-1---menambahkan-tombol-detail-pada-dashboardjokes)
-  - [Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes`](#step-2---menambahkan-tombol-delete-pada-dashboardjokes)
-  - [Step 3 - Membuat Client Component `TableJokes`](#step-3---membuat-client-component-tablejokes)
-  - [Step 4 - Implementasi Delete pada Client Component `TableJokes`](#step-4---implementasi-delete-pada-client-component-tablejokes)
-  - [Intermezzo - Data Cache](#intermezzo---data-cache)
-  - [Step 5 - Opt-out dari Data Cache](#step-5---opt-out-dari-data-cache)
-  - [Step 6 - Membuat Form Add Joke (Client Component)](#step-6---membuat-form-add-joke-client-component)
-  - [Intermezzo - `Server Actions`](#intermezzo---server-actions)
-  - [Step 7 - Membuat Form Add Joke (Server Rendered Component)](#step-7---membuat-form-add-joke-server-rendered-component)
-- [References](#references)
+- [Education NextJS - Client Component \& Server Action](#education-nextjs---client-component--server-action)
+  - [Table of Content](#table-of-content)
+  - [Scope Pembelajaran](#scope-pembelajaran)
+  - [Disclaimer](#disclaimer)
+  - [Demo](#demo)
+    - [Step 0 - Menyalakan server](#step-0---menyalakan-server)
+    - [Step 1 - Menambahkan "tombol" `Detail` pada `/dashboard/jokes`](#step-1---menambahkan-tombol-detail-pada-dashboardjokes)
+    - [Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes`](#step-2---menambahkan-tombol-delete-pada-dashboardjokes)
+    - [Step 3 - Membuat Client Component `TableJokes`](#step-3---membuat-client-component-tablejokes)
+    - [Step 4 - Implementasi Delete pada Client Component `TableJokes`](#step-4---implementasi-delete-pada-client-component-tablejokes)
+    - [Intermezzo - Data Cache](#intermezzo---data-cache)
+    - [Step 5 - Opt-out dari Data Cache](#step-5---opt-out-dari-data-cache)
+    - [Step 6 - Membuat Form Add Joke (Client Component)](#step-6---membuat-form-add-joke-client-component)
+    - [Intermezzo - `Server Actions`](#intermezzo---server-actions)
+    - [Step 7 - Membuat Form Add Joke (Server Rendered Component)](#step-7---membuat-form-add-joke-server-rendered-component)
+  - [References](#references)
 
 ## Scope Pembelajaran
 
@@ -38,9 +40,7 @@
 
 1. cd `/sources/a-start/server`
 1. install package yang dibutuhkan dengan `npm install`
-1. jalankan server dengan `npm run watch-delay`
-
-   Pada perintah ini untuk setiap HTTP Request (POST,PUT,PATCH,DELETE,GET) akan memerlukan waktu sekitar 5 detik per request (untuk mensimulasikan loading)
+1. jalankan server dengan `npm run watch`
 
 ### Step 1 - Menambahkan "tombol" `Detail` pada `/dashboard/jokes`
 
@@ -58,7 +58,7 @@ Pada langkah ini kita akan mencoba untuk menambahkan "tombol" Detail pada setiap
 
    // Membuat definition type untuk data yang akan di-parse
    type Joke = {
-     id: number;
+     id: string;
      setup: string;
      delivery: string;
    };
@@ -126,7 +126,7 @@ Pada langkah ini kita akan mencoba untuk menambahkan "tombol" Detail pada setiap
 
 ### Step 2 - Menambahkan tombol `Delete` pada `/dashboard/jokes`
 
-Pada langkah ini kita akan mencoba untuk menambahkan tombol ` Delete` pada setiap item joke yang ada pada halaman `/dashboard/jokes`.
+Pada langkah ini kita akan mencoba untuk menambahkan tombol `Delete` pada setiap item joke yang ada pada halaman `/dashboard/jokes`.
 
 1. Membuka file `/src/app/dashboard/jokes/page.tsx` dan memodifikasi file menjadi sebagai berikut:
 
@@ -139,7 +139,7 @@ Pada langkah ini kita akan mencoba untuk menambahkan tombol ` Delete` pada setia
 
    // Membuat definition type untuk data yang akan di-parse
    type Joke = {
-     id: number;
+     id: string;
      setup: string;
      delivery: string;
    };
@@ -166,7 +166,7 @@ Pada langkah ini kita akan mencoba untuk menambahkan tombol ` Delete` pada setia
        // Sehingga deklarasi typenya akan menjadi MouseEvent<HTMLButtonElement>
        // Mungkin di sini tidak akan digunakan, sehingga kita akan menambahkan _ (underscore) untuk mengabaikan parameter tersebut
        _event: React.MouseEvent<HTMLButtonElement>,
-       id: number
+       id: string
      ) => {
        // Kita di sini akan mencoba untuk mensimulasikan terlebih dahulu dengan menggunakan console.log
        console.log("Delete Button Clicked for id:", id);
@@ -207,6 +207,7 @@ Pada langkah ini kita akan mencoba untuk menambahkan tombol ` Delete` pada setia
                  {/* Di sini kita akan menambahkan button untuk melakukan interaksi buttonDeleteOnClickHandler */}
                  <td className="p-2">
                    <button
+                     type="button"
                      onClick={(event) =>
                        buttonDeleteOnClickHandler(event, joke.id)
                      }
@@ -254,7 +255,7 @@ Untuk itu cara mengakalinya adalah kita harus mendeklarasikan sebuah component y
    const TableJokes = () => {
      return (
        <>
-         <div>TableJokes</div>;
+         <div>TableJokes</div>
        </>
      );
    };
@@ -280,7 +281,7 @@ Untuk itu cara mengakalinya adalah kita harus mendeklarasikan sebuah component y
    // ?? Step 3 - Membuat Client Component `TableJokes` (5)
    // Membuat definition type untuk data yang akan di-parse
    type Joke = {
-     id: number;
+     id: string;
      setup: string;
      delivery: string;
    };
@@ -290,7 +291,7 @@ Untuk itu cara mengakalinya adalah kita harus mendeklarasikan sebuah component y
    const TableJokes = ({ jokes }: { jokes: Joke[] }) => {
      const buttonDeleteOnClickHandler = (
        _event: React.MouseEvent<HTMLButtonElement>,
-       id: number
+       id: string
      ) => {
        console.log("Delete Button Clicked for id:", id);
      };
@@ -324,6 +325,7 @@ Untuk itu cara mengakalinya adalah kita harus mendeklarasikan sebuah component y
                  </td>
                  <td className="p-2">
                    <button
+                     type="button"
                      onClick={(event) =>
                        buttonDeleteOnClickHandler(event, joke.id)
                      }
@@ -355,7 +357,7 @@ Untuk itu cara mengakalinya adalah kita harus mendeklarasikan sebuah component y
 
    // Membuat definition type untuk data yang akan di-parse
    type Joke = {
-     id: number;
+     id: string;
      setup: string;
      delivery: string;
    };
@@ -416,7 +418,7 @@ Pada langkah ini kita akan mencoba untuk mengimplementasi Delete yang sebenarnya
    // ?? Step 3 - Membuat Client Component `TableJokes` (5)
    // Membuat definition type untuk data yang akan di-parse
    type Joke = {
-     id: number;
+     id: string;
      setup: string;
      delivery: string;
    };
@@ -432,7 +434,7 @@ Pada langkah ini kita akan mencoba untuk mengimplementasi Delete yang sebenarnya
      // Membuat fungsi ini menjadi async karena kita akan melakukan fetch ke backend
      const buttonDeleteOnClickHandler = async (
        _event: React.MouseEvent<HTMLButtonElement>,
-       id: number
+       id: string
      ) => {
        console.log("Delete Button Clicked for id:", id);
 
@@ -479,6 +481,7 @@ Pada langkah ini kita akan mencoba untuk mengimplementasi Delete yang sebenarnya
                  </td>
                  <td className="p-2">
                    <button
+                     type="button"
                      onClick={(event) =>
                        buttonDeleteOnClickHandler(event, joke.id)
                      }
@@ -505,72 +508,13 @@ Pada langkah ini kita akan mencoba untuk mengimplementasi Delete yang sebenarnya
 
    Dan halaman ini juga sudah melakukan refresh dengan menggunakan suatu navigasi `navigation.refresh()`
 
-   Sayangnya masih ada sedikit error yang terjadi, yaitu, sekalipun kita sudah me-refresh halaman yang ada, dan fetch ulang untuk GET sudah terjadi, tapi, datanya masih keluar yang lama.
-
-   Hmm.... 🤔🤔🤔
-
-   **Kenapa seperti itu yah?**
-
 ### Intermezzo - Data Cache
 
-Hal ini terjadi karena behaviour dari `Data Cache` yang ada di dalam NextJS itu sendiri.
-
-Defaultnya dari `Data Cache` yang dilakukan pada saat melakukan `fetch` pada server adalah `force-cache`, di mana, data akan disimpan di-dalam memory selama belum dilakukan `revalidate` (meminta server untuk melakukan fetch ulang) atau dilakukan `opt-out` (meminta server untuk tidak menyimpan hasil request).
-
-Nah karena pada `client component` ini kita meminta untuk melakukan `router.refresh()`, di mana, secara otomatis akan meminta server untuk melakukan fetch ulang, maka, data yang ada di dalam `Data Cache` akan tetap digunakan (karena defaultnya adalah `force-cache`).
-
-Solusi yang bisa kita gunakan supaya ketika `router.refresh()` pada client bisa meminta data terbaru dari server adalah dengan menggunakan `opt-out` pada saat melakukan fetch.
+> Bagian ini sudah dihapus karena pada versi NextJS 15+, by default cache sudah di-_disable_.
 
 ### Step 5 - Opt-out dari Data Cache
 
-Pada langkah ini kita akan melakukan ` opt out` dari `Data Cache` yang ada di dalam NextJS.
-
-1. Membuka kembali file `src/dashboard/jokes/page.tsx` dan memodifikasi kode menjadi seperti berikut:
-
-   ```tsx
-   import TableJokes from "@/components/TableJokes";
-
-   // Membuat definition type untuk data yang akan di-parse
-   type Joke = {
-     id: number;
-     setup: string;
-     delivery: string;
-   };
-
-   const fetchJokes = async () => {
-     // ?? Step 5 - Opt-out dari Data Cache (1),
-     // Melakukan opt-out dari data cache
-     // dengan menggunakan cache: "no-store"
-     const response = await fetch("http://localhost:3001/jokes", {
-       cache: "no-store",
-     });
-     const responseJson: Joke[] = await response.json();
-
-     if (!response.ok) {
-       throw new Error("Waduh Error ...");
-     }
-
-     return responseJson;
-   };
-
-   const DashboardJokePage = async () => {
-     const jokes = await fetchJokes();
-
-     return (
-       <section>
-         <h2 className="text-2xl font-semibold">Dashboard Page - Jokes</h2>
-         <TableJokes jokes={jokes} />
-       </section>
-     );
-   };
-
-   export default DashboardJokePage;
-   ```
-
-1. Membuka browser kembali pada halaman `dashboard/jokes` (`http://localhost:3000/dashboard/jokes`), kemudian jangan lupa untuk membuka `Inspect -> Console` untuk melihat hasil dari console log yang akan keluar.
-1. Menekan salah satu tombol delete yang ada, kemudian lihat hasilnya.
-
-Sampai pada tahap ini, kita sudah berhasil untuk melakuan `opt-out` dari `Data Cache` yang ada di dalam NextJS dan berhasil menghapus data yang ada di dalam server pada saat client menekan tombol delete.
+> Bagian ini sudah dihapus karena pada versi NextJS 15+, by default cache sudah di-_disable_.
 
 ### Step 6 - Membuat Form Add Joke (Client Component)
 
@@ -592,7 +536,10 @@ Nah hal ini juga adalah hal yang akan kita lakukan apabila kita menggunakan `cli
    "use client";
 
    import { useRouter } from "next/navigation";
-   import React, { useState } from "react";
+   // ? Karena pada component ini kita akan menggunakan tipe data dari React
+   // ? Maka kita perlu import React, tapi hanya sebagai type saja
+   import type React from "react";
+   import { useState } from "react";
 
    const ClientFormAddJokes = () => {
      const navigation = useRouter();
@@ -637,6 +584,8 @@ Nah hal ini juga adalah hal yang akan kita lakukan apabila kita menggunakan `cli
            <p className="font-semibold mb-4">
              Form Add Jokes - Client Component
            </p>
+           {/* // ! Sebenarnya di sini kita mulai bisa menggunakan React 19 component baru */}
+           {/* // ! bernama <Form>, tapi di sini kita belum menggunakannya yah ! */}
            <form className="flex flex-col gap-2" onSubmit={onSubmitHandler}>
              <input
                className="py-2 px-4"
@@ -678,15 +627,13 @@ Nah hal ini juga adalah hal yang akan kita lakukan apabila kita menggunakan `cli
 
    // Membuat definition type untuk data yang akan di-parse
    type Joke = {
-     id: number;
+     id: string;
      setup: string;
      delivery: string;
    };
 
    const fetchJokes = async () => {
-     const response = await fetch("http://localhost:3001/jokes", {
-       cache: "no-store",
-     });
+     const response = await fetch("http://localhost:3001/jokes");
      const responseJson: Joke[] = await response.json();
 
      if (!response.ok) {
@@ -902,6 +849,6 @@ Selamat mempelajari NextJS dan sampai jumpa di pembelajaran berikutnya !
 
 ## References
 
-- https://nextjs.org/docs/app/building-your-application/data-fetching/patterns
-- https://nextjs.org/docs/app/api-reference/functions/server-actions
-- https://nextjs.org/docs/app/building-your-application/rendering/client-components
+- <https://nextjs.org/docs/app/building-your-application/data-fetching/patterns>
+- <https://nextjs.org/docs/app/api-reference/functions/server-actions>
+- <https://nextjs.org/docs/app/building-your-application/rendering/client-components>
