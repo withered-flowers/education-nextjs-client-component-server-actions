@@ -49,6 +49,11 @@
       "id": "d4a2",
       "setup": "What is the most used language in programming?",
       "delivery": "Profanity."
+    },
+    {
+      "id": "2902",
+      "setup": "halo",
+      "delivery": "dunia"
     }
   ]
 }

@@ -7,6 +7,10 @@ import TableJokes from "@/components/TableJokes";
 // Mengimport component ClientFormAddJokes
 import ClientFormAddJokes from "@/components/ClientFormAddJokes";
 
+// ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (2)
+// Mengimport component ServerFormAddJokes
+import ServerFormAddJokes from "@/components/ServerFormAddJokes";
+
 // Membuat definition type untuk data yang akan di-parse
 type Joke = {
 	id: string;
@@ -36,6 +40,9 @@ const DashboardJokePage = async () => {
 			{/* Memanggil component ClientFormAddJokes */}
 			<section className="flex gap-4">
 				<ClientFormAddJokes />
+				{/* ?? Step 7 - Membuat Form Add Joke (Server Rendered Component) (3) */}
+				{/* Memanggil component ServerFormAddJokes */}
+				<ServerFormAddJokes />
 			</section>
 
 			{/* ?? Step 3 - Membuat Client Component `TableJokes` (8) */}
